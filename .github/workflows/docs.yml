@@ -46,18 +46,13 @@ jobs:
       - name: Install the project
         run: uv sync --all-extras --dev
 
-      - name: Activate virtual environment
-        run: source .venv/bin/activate
-
       - name: Build documentation
-        run: |
-          cd docs
-          make html
+        run: uv run sphinx-build -M html docs/source docs/build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/_build/html
+          path: docs/build/html
 
   deploy:
     needs: build
@@ -73,4 +68,4 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
